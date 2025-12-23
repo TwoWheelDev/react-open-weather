@@ -9,7 +9,7 @@ export interface CurrentData {
   date: string|number
   description: string
   icon: string
-  temperature: { current: string|number, min: string|number, max: string|number }
+  temperature: { current: string|number, min: string|number|undefined, max: string|number|undefined }
   wind: string|number
   humidity: string|number
 }
