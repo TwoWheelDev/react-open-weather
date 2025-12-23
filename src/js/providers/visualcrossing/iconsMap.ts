@@ -19,7 +19,9 @@ const iconsMap = {
   'clear-night': svgIcons.sunny,
 };
 
-export const getIcon = name => {
+export type WeatherCode = keyof typeof iconsMap;
+
+export const getIcon = (name: WeatherCode) => {
   if (iconsMap[name]) {
     return iconsMap[name];
   }
