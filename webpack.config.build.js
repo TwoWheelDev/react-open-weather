@@ -1,24 +1,26 @@
 const path = require('path');
 
 module.exports = {
-  entry: {
-    main: './src/js/index.js',
-  },
+  entry: './src/js/index.ts',
   output: {
     path: path.resolve(__dirname, './lib'),
     filename: 'ReactWeather.js',
-    libraryTarget: 'umd',
-    library: 'ReactWeather',
-    umdNamedDefine: true,
-    globalObject: 'this'
+    library: {
+      type: 'module',
+    },
   },
-  devtool: false,
+  experiments: {
+    outputModule: true,
+  },
+  resolve: {
+    extensions: ['.ts', '.tsx', '.js'],
+  },
   module: {
     rules: [
       {
-        test: /\.js$/,
-        exclude: /(node_modules)/,
-        loader: 'babel-loader',
+        test: /\.(ts|tsx)$/,
+        exclude: /node_modules/,
+        use: 'ts-loader',
       },
     ],
   },
@@ -26,5 +28,4 @@ module.exports = {
     react: 'react',
     'react-dom': 'react-dom',
   },
-  plugins: [],
 };

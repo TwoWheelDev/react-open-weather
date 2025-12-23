@@ -1,9 +1,25 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import WeatherIcon from './WeatherIcon';
 import { StyledDaysPanel } from './Forecast.styles';
+import { UnitsLabels } from '../models/unitsLabels';
+import defaultTheme from '../defaultTheme';
 
-const Forecast = ({ unitsLabels, forecast, theme }) => {
+export interface ForecastData {
+  date: string
+  description: string
+  icon: string
+  temperature: { min: string, max: string },
+  wind: string,
+  humidity: number,
+}
+
+export interface ForecastProps {
+  unitsLabels: UnitsLabels
+  forecast: Array<ForecastData>
+  theme: typeof defaultTheme
+}
+
+const Forecast: React.FC<ForecastProps> = ({ unitsLabels, forecast, theme }) => {
   return (
     <StyledDaysPanel className="rw-forecast-days-panel" theme={theme}>
       {forecast.map((day, i) => {
@@ -30,12 +46,6 @@ const Forecast = ({ unitsLabels, forecast, theme }) => {
       })}
     </StyledDaysPanel>
   );
-};
-
-Forecast.propTypes = {
-  unitsLabels: PropTypes.object.isRequired,
-  forecast: PropTypes.array.isRequired,
-  theme: PropTypes.object.isRequired,
 };
 
 export default Forecast;

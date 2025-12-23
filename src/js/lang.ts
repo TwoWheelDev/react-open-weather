@@ -43,3 +43,5 @@ export const langText = {
   ar: { wind: 'رياح', humidity: 'رطوبة' },
 
 };
+
+export type LanguageCode = keyof typeof langText;

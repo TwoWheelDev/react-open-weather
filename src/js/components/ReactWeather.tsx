@@ -1,20 +1,37 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import Today from './Today';
-import Forecast from './Forecast';
+import Today, { CurrentData } from './Today';
+import Forecast, { ForecastData } from './Forecast';
 import WeatherIcon from './WeatherIcon';
 import { StyledContainer } from './ReactWeather.styles';
 import defaultTheme from '../defaultTheme';
+import { UnitsLabels } from '../models/unitsLabels';
+import { LanguageCode } from '../lang';
 
-const ReactWeather = ({
-  unitsLabels,
-  showForecast,
-  lang,
-  data,
-  locationLabel,
-  isLoading,
-  errorMessage,
-  theme,
+export interface WeatherData {
+  forecast: Array<ForecastData>
+  current: CurrentData
+}
+
+export interface ReactWeatherProps {
+  unitsLabels?: UnitsLabels
+  showForecast?: boolean
+  lang?: LanguageCode
+  data: WeatherData|null
+  locationLabel?: string
+  isLoading?: boolean
+  errorMessage: string|null
+  theme?: typeof defaultTheme
+}
+
+const ReactWeather: React.FC<ReactWeatherProps> = ({
+  unitsLabels = { temperature: 'C', windSpeed: 'Km/h' },
+  showForecast = true,
+  lang = 'en',
+  data = null,
+  locationLabel = '',
+  isLoading = false,
+  errorMessage = null,
+  theme = defaultTheme,
 }) => {
   if (data) {
     const { forecast, current } = data;
@@ -25,7 +42,7 @@ const ReactWeather = ({
       return <div>{errorMessage}</div>;
     }
     return (
-      <StyledContainer showForecast={showForecast} className="rw-container" theme={theme}>
+      <StyledContainer className="rw-container" theme={theme}>
         <div className="rw-container-main">
           <div className="rw-container-left">
             <h2 className="rw-container-header">{locationLabel}</h2>
@@ -49,7 +66,6 @@ const ReactWeather = ({
           <Forecast
             unitsLabels={unitsLabels}
             forecast={forecast}
-            lang={lang}
             theme={theme}
           />
         )}
@@ -57,31 +73,6 @@ const ReactWeather = ({
     );
   }
   return null;
-};
-
-ReactWeather.propTypes = {
-  data: PropTypes.object,
-  isLoading: PropTypes.bool,
-  errorMessage: PropTypes.string,
-  unitsLabels: PropTypes.object,
-  showForecast: PropTypes.bool,
-  lang: PropTypes.string,
-  locationLabel: PropTypes.string,
-  theme: PropTypes.object,
-};
-
-ReactWeather.defaultProps = {
-  data: null,
-  locationLabel: '',
-  errorMessage: null,
-  isLoading: false,
-  unitsLabels: {
-    temperature: 'C',
-    windSpeed: 'Km/h',
-  },
-  showForecast: true,
-  lang: 'en',
-  theme: defaultTheme,
 };
 
 export default ReactWeather;

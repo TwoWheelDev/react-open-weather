@@ -1,9 +1,27 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { getLabelsByLanguage } from '../utils';
 import { StyledtodayPanel } from './Today.styles';
+import defaultTheme from '../defaultTheme';
+import { UnitsLabels } from '../models/unitsLabels';
+import { LanguageCode } from '../lang';
 
-const Today = ({ current, unitsLabels, lang, theme }) => {
+export interface CurrentData {
+  date: string|number
+  description: string
+  icon: string
+  temperature: { current: string|number, min: string|number, max: string|number }
+  wind: string|number
+  humidity: string|number
+}
+
+export interface TodayProps {
+  current: CurrentData
+  unitsLabels: UnitsLabels
+  lang: LanguageCode
+  theme?: typeof defaultTheme
+}
+
+const Today: React.FC<TodayProps> = ({ current, unitsLabels, lang, theme }) => {
   const labels = getLabelsByLanguage(lang);
   const hasRange =
     current.temperature.min !== undefined &&
@@ -33,13 +51,6 @@ const Today = ({ current, unitsLabels, lang, theme }) => {
       </div>
     </StyledtodayPanel>
   );
-};
-
-Today.propTypes = {
-  current: PropTypes.object.isRequired,
-  unitsLabels: PropTypes.object.isRequired,
-  lang: PropTypes.string.isRequired,
-  theme: PropTypes.object.isRequired,
 };
 
 export default Today;
