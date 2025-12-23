@@ -1,6 +1,11 @@
 import styled from '@emotion/styled';
+import { Theme } from '@emotion/react'
 
-export const StyledDaysPanel = styled.div`
+interface StyledDaysPanelProps {
+  theme: Theme
+}
+
+export const StyledDaysPanel = styled.div<StyledDaysPanelProps>`
   clear: both;
   display: flex;
   border-left: ${({ theme }) => `solid 1px ${theme.forecastBackgroundColor}`};

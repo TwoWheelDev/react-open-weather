@@ -1,6 +1,11 @@
 import styled from '@emotion/styled';
+import { Theme } from '@emotion/react'  
 
-export const StyledtodayPanel = styled.div`
+interface StyledTodayPanelProps {
+  theme?: Theme
+}
+
+export const StyledtodayPanel = styled.div<StyledTodayPanelProps>`
   .rw-today-date {
     color: ${({ theme }) => theme.todayDateFontColor};
   }

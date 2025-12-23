@@ -1,4 +1,6 @@
-export default {
+import { Theme } from '@emotion/react'
+
+const defaultTheme: Theme = {
   fontFamily: 'Helvetica, sans-serif',
   gradientStart: '#0181C2',
   gradientMid: '#04A7F9',
@@ -18,3 +20,5 @@ export default {
   forecastIconColor: '#4BC4F7',
   containerDropShadow: '0px 3px 6px 0px rgba(50, 50, 50, 0.5)',
 };
+
+export default defaultTheme

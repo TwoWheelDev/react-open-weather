@@ -1,6 +1,12 @@
 import styled from '@emotion/styled';
+import { Theme } from '@emotion/react'
 
-export const StyledContainer = styled.div`
+interface StyledContainerProps {
+  showForecast?: boolean
+  theme: Theme
+}
+
+export const StyledContainer = styled.div<StyledContainerProps>`
   font-family: ${({ theme }) => theme.fontFamily};
   font-size: 13px;
   box-shadow: ${({ theme }) => theme.containerDropShadow};
