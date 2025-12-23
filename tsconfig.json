@@ -5,12 +5,15 @@
     "jsx": "react-jsx",
     "declaration": true,
     "declarationDir": "lib",
-    "emitDeclarationOnly": true,
+    "emitDeclarationOnly": false,
     "strict": true,
     "moduleResolution": "Node",
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
+    "rootDir": "src/js",
+    "outDir": "lib",
+    "noEmit": false
   },
   "include": ["src"]
 }
