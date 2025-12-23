@@ -31,14 +31,16 @@ const weatherCodeMap = {
     99: { 'desc': 'Thunderstorm with heavy hail', 'icon': svgIcons.thunderstorms },
 }
 
-export const getWeatherDescription = code => {
+export type WeatherCode = keyof typeof weatherCodeMap;
+
+export const getWeatherDescription = (code: WeatherCode) => {
     if (weatherCodeMap[code]) {
         return weatherCodeMap[code]['desc']
     }
     return ''
 }
 
-export const getIcon = code => {
+export const getIcon = (code: WeatherCode) => {
     if (weatherCodeMap[code]) {
         return weatherCodeMap[code]['icon']
     }
