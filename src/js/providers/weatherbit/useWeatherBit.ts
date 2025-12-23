@@ -1,44 +1,58 @@
 import { useEffect, useReducer, useState } from 'react';
 import dayjs from 'dayjs';
 import axios from 'axios';
-import { getIcon } from './iconsMap';
+import { getIcon, WeatherCode } from './iconsMap';
+import { SUCCESS, FAILURE, fetchReducer } from '../provider_utils';
+import { LanguageCode } from '../../lang';
+import { WeatherData } from '../../components/ReactWeather';
+import { CurrentData } from '../../components/Today';
+import { ForecastData } from '../../components/Forecast';
 
-const SUCCESS = 'SUCCESS';
-const FAILURE = 'FAILURE';
+interface useWeatherBitOptions {
+  key?: string
+  lat: string | number
+  lon: string | number
+  lang: LanguageCode
+  unit?: string
+}
+
+interface WeatherBitCurrent {
+  rh: number,
+  city_name: string,
+  wind_spd: number,
+  weather: { icon: string, code: WeatherCode, description: string },
+  datetime: string,
+  temp: number
+}
+
+interface WeatherBitForecast {
+  rh: number,
+  wind_spd: number,
+  weather: { icon: string, code: WeatherCode, description: string },
+  max_temp: number,
+  datetime: string,
+  min_temp: number,
+}
 
 const initialState = {
   data: null,
   errorMessage: null,
 };
 
-export const fetchReducer = (state, { type, payload }) => {
-  switch (type) {
-    case SUCCESS:
-      return {
-        data: payload,
-        errorMessage: null,
-      };
-    case FAILURE:
-      return { data: null, errorMessage: payload };
-    default:
-      return state;
-  }
-};
-
-export const formatDate = (dte, lang) => {
+export const formatDate = (dte: string, lang: LanguageCode) => {
   if (lang && lang !== 'en') {
     dayjs.locale(lang.replace('_', '-'));
   }
-  if (dte && dayjs().isValid(dte)) {
+  if (dte && dayjs(dte).isValid()) {
     return dayjs(dte).format('ddd D MMMM');
   }
   return '';
 };
 
-export const mapCurrent = (day, current, lang) => {
+export const mapCurrent = (day: WeatherBitForecast, current: WeatherBitCurrent, lang: LanguageCode): CurrentData => {
   return {
     date: formatDate(day.datetime, lang),
-    description: current.weather ? current.weather.description : null,
+    description: current.weather ? current.weather.description : '',
     icon: current.weather && getIcon(current.weather.code),
     temperature: {
       current: current.temp.toFixed(0),
@@ -50,12 +64,12 @@ export const mapCurrent = (day, current, lang) => {
   };
 };
 
-export const mapForecast = (forecast, lang) => {
+export const mapForecast = (forecast: WeatherBitForecast[], lang: LanguageCode): ForecastData[] => {
   const mappedForecast = [];
   for (let i = 0; i < 5; i += 1) {
     mappedForecast.push({
       date: formatDate(forecast[i].datetime, lang),
-      description: forecast[i].weather ? forecast[i].weather.description : null,
+      description: forecast[i].weather ? forecast[i].weather.description : '',
       icon: forecast[i].weather && getIcon(forecast[i].weather.code),
       temperature: {
         min: forecast[i].min_temp.toFixed(0),
@@ -68,17 +82,19 @@ export const mapForecast = (forecast, lang) => {
   return mappedForecast;
 };
 
-export const mapData = (daysData, current, lang) => {
-  const mapped = {};
+export const mapData = (daysData: WeatherBitForecast[], current: WeatherBitCurrent, lang: LanguageCode): WeatherData => {
   if (daysData && current) {
-    mapped.location = current.city_name;
-    mapped.forecast = mapForecast(daysData, lang);
-    mapped.current = mapCurrent(daysData[0], current, lang);
+    const mapped: WeatherData = {
+      current: mapCurrent(daysData[0], current, lang),
+      forecast: mapForecast(daysData, lang)
+    }
+
+    return mapped;
   }
-  return mapped;
+  throw new Error("No weather data supplied");
 };
 
-const useWeatherBit = (options) => {
+const useWeatherBit = (options: useWeatherBitOptions) => {
   const baseApiUrl = 'https://api.weatherbit.io/v2.0';
   const endpointForecast = `${baseApiUrl}/forecast/daily`;
   const endPointToday = `${baseApiUrl}/current`;
@@ -111,8 +127,17 @@ const useWeatherBit = (options) => {
         type: SUCCESS,
         payload,
       });
-    } catch (error) {
-      dispatch({ type: FAILURE, payload: error.message || error });
+    } catch (error: unknown) {
+
+      let message: string;
+
+      if (error instanceof Error) {
+        message = error.message;
+      } else {
+        message = String(error); // fallback to string representation
+      }
+
+      dispatch({ type: FAILURE, payload: message });
     }
     setIsLoading(false);
   };
