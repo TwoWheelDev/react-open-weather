@@ -14,7 +14,7 @@ export type FetchAction =
 
 export const fetchReducer = (
   state: FetchState,
-  action: FetchAction
+  action: FetchAction,
 ): FetchState => {
   switch (action.type) {
     case SUCCESS:

@@ -1,4 +1,4 @@
-export interface UnitsLabels { 
-    temperature: string 
-    windSpeed: string 
+export interface UnitsLabels {
+  temperature: string;
+  windSpeed: string;
 }

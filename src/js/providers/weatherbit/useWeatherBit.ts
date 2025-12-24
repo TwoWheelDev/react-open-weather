@@ -9,29 +9,29 @@ import { CurrentData } from '../../components/Today';
 import { ForecastData } from '../../components/Forecast';
 
 interface useWeatherBitOptions {
-  key?: string
-  lat: string | number
-  lon: string | number
-  lang: LanguageCode
-  unit?: string
+  key?: string;
+  lat: string | number;
+  lon: string | number;
+  lang: LanguageCode;
+  unit?: string;
 }
 
 interface WeatherBitCurrent {
-  rh: number,
-  city_name: string,
-  wind_spd: number,
-  weather: { icon: string, code: WeatherCode, description: string },
-  datetime: string,
-  temp: number
+  rh: number;
+  city_name: string;
+  wind_spd: number;
+  weather: { icon: string; code: WeatherCode; description: string };
+  datetime: string;
+  temp: number;
 }
 
 interface WeatherBitForecast {
-  rh: number,
-  wind_spd: number,
-  weather: { icon: string, code: WeatherCode, description: string },
-  max_temp: number,
-  datetime: string,
-  min_temp: number,
+  rh: number;
+  wind_spd: number;
+  weather: { icon: string; code: WeatherCode; description: string };
+  max_temp: number;
+  datetime: string;
+  min_temp: number;
 }
 
 const initialState = {
@@ -49,7 +49,11 @@ export const formatDate = (dte: string, lang: LanguageCode) => {
   return '';
 };
 
-export const mapCurrent = (day: WeatherBitForecast, current: WeatherBitCurrent, lang: LanguageCode): CurrentData => {
+export const mapCurrent = (
+  day: WeatherBitForecast,
+  current: WeatherBitCurrent,
+  lang: LanguageCode,
+): CurrentData => {
   return {
     date: formatDate(day.datetime, lang),
     description: current.weather ? current.weather.description : '',
@@ -64,7 +68,10 @@ export const mapCurrent = (day: WeatherBitForecast, current: WeatherBitCurrent, 
   };
 };
 
-export const mapForecast = (forecast: WeatherBitForecast[], lang: LanguageCode): ForecastData[] => {
+export const mapForecast = (
+  forecast: WeatherBitForecast[],
+  lang: LanguageCode,
+): ForecastData[] => {
   const mappedForecast = [];
   for (let i = 0; i < 5; i += 1) {
     mappedForecast.push({
@@ -82,16 +89,20 @@ export const mapForecast = (forecast: WeatherBitForecast[], lang: LanguageCode):
   return mappedForecast;
 };
 
-export const mapData = (daysData: WeatherBitForecast[], current: WeatherBitCurrent, lang: LanguageCode): WeatherData => {
+export const mapData = (
+  daysData: WeatherBitForecast[],
+  current: WeatherBitCurrent,
+  lang: LanguageCode,
+): WeatherData => {
   if (daysData && current) {
     const mapped: WeatherData = {
       current: mapCurrent(daysData[0], current, lang),
-      forecast: mapForecast(daysData, lang)
-    }
+      forecast: mapForecast(daysData, lang),
+    };
 
     return mapped;
   }
-  throw new Error("No weather data supplied");
+  throw new Error('No weather data supplied');
 };
 
 const useWeatherBit = (options: useWeatherBitOptions) => {
@@ -128,7 +139,6 @@ const useWeatherBit = (options: useWeatherBitOptions) => {
         payload,
       });
     } catch (error: unknown) {
-
       let message: string;
 
       if (error instanceof Error) {

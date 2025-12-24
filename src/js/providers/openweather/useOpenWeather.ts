@@ -9,56 +9,56 @@ import { WeatherData } from '../../components/ReactWeather';
 import { SUCCESS, FAILURE, fetchReducer } from '../provider_utils';
 
 interface useOpenWeatherOptions {
-  key?: string
-  lat: string|number
-  lon: string|number
-  lang: LanguageCode
-  unit?: string
+  key?: string;
+  lat: string | number;
+  lon: string | number;
+  lang: LanguageCode;
+  unit?: string;
 }
 
 interface OpenWeatherDaily {
-  dt: number
-  sunrise: number
-  sunset: number
+  dt: number;
+  sunrise: number;
+  sunset: number;
   temp: {
-    day: number
-    min: number
-    max: number
-    night: number
-    eve: number
-    morn: number
-  }
-  feels_like: { day: number, night: number, eve: number, morn: number }
-  pressure: number
-  humidity: number
-  dew_point: number
-  wind_speed: number
-  wind_deg: number
+    day: number;
+    min: number;
+    max: number;
+    night: number;
+    eve: number;
+    morn: number;
+  };
+  feels_like: { day: number; night: number; eve: number; morn: number };
+  pressure: number;
+  humidity: number;
+  dew_point: number;
+  wind_speed: number;
+  wind_deg: number;
   weather: [
-    { id: number, main: string, description: string, icon: WeatherCode },
-  ]
-  clouds: number
-  pop: number
-  uvi: number
+    { id: number; main: string; description: string; icon: WeatherCode },
+  ];
+  clouds: number;
+  pop: number;
+  uvi: number;
 }
 
 interface OpenWeatherCurrent {
-  dt: number
-  sunrise: number
-  sunset: number
-  temp: number
-  feels_like: number
-  pressure: number
-  humidity: number
-  dew_point: number
-  wind_speed: number
-  wind_deg: number
+  dt: number;
+  sunrise: number;
+  sunset: number;
+  temp: number;
+  feels_like: number;
+  pressure: number;
+  humidity: number;
+  dew_point: number;
+  wind_speed: number;
+  wind_deg: number;
   weather: [
-    { id: number, main: string, description: string, icon: WeatherCode },
-  ]
-  clouds: number
-  uvi: number
-  visibility: number
+    { id: number; main: string; description: string; icon: WeatherCode },
+  ];
+  clouds: number;
+  uvi: number;
+  visibility: number;
 }
 
 export const formatDate = (dte: number, lang: LanguageCode) => {
@@ -71,7 +71,10 @@ export const formatDate = (dte: number, lang: LanguageCode) => {
   return '';
 };
 
-export const mapCurrent = (day: OpenWeatherCurrent, lang: LanguageCode): CurrentData => {
+export const mapCurrent = (
+  day: OpenWeatherCurrent,
+  lang: LanguageCode,
+): CurrentData => {
   return {
     date: formatDate(day.dt, lang),
     description: day.weather[0] ? day.weather[0].description : '',
@@ -86,7 +89,10 @@ export const mapCurrent = (day: OpenWeatherCurrent, lang: LanguageCode): Current
   };
 };
 
-export const mapForecast = (forecast: OpenWeatherDaily[], lang: LanguageCode): ForecastData[] => {
+export const mapForecast = (
+  forecast: OpenWeatherDaily[],
+  lang: LanguageCode,
+): ForecastData[] => {
   const mappedForecast = [];
 
   for (let i = 0; i < 5; i += 1) {
@@ -107,16 +113,20 @@ export const mapForecast = (forecast: OpenWeatherDaily[], lang: LanguageCode): F
   return mappedForecast;
 };
 
-export const mapData = (forecastData: OpenWeatherDaily[], todayData: OpenWeatherCurrent, lang: LanguageCode) => {
+export const mapData = (
+  forecastData: OpenWeatherDaily[],
+  todayData: OpenWeatherCurrent,
+  lang: LanguageCode,
+) => {
   if (forecastData && todayData) {
     const mapped: WeatherData = {
-          current: mapCurrent(todayData, lang),
-          forecast: mapForecast(forecastData, lang)
-        }
-    
+      current: mapCurrent(todayData, lang),
+      forecast: mapForecast(forecastData, lang),
+    };
+
     return mapped;
   }
-  throw new Error("No weather data supplied");
+  throw new Error('No weather data supplied');
 };
 
 const initialState = {
@@ -153,7 +163,6 @@ const useOpenWeather = (options: useOpenWeatherOptions) => {
         payload,
       });
     } catch (error: unknown) {
-
       let message: string;
 
       if (error instanceof Error) {
@@ -161,7 +170,7 @@ const useOpenWeather = (options: useOpenWeatherOptions) => {
       } else {
         message = String(error); // fallback to string representation
       }
-      
+
       dispatch({ type: FAILURE, payload: message });
     }
     setIsLoading(false);

@@ -1,7 +1,7 @@
 import { useEffect, useReducer, useState } from 'react';
 import dayjs from 'dayjs';
-import utc from "dayjs/plugin/utc"
-import timezone from "dayjs/plugin/timezone"
+import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
 import axios from 'axios';
 import { getIcon, WeatherCode } from './iconsMap';
 import { LanguageCode } from '../../lang';
@@ -11,46 +11,46 @@ import { ForecastData } from '../../components/Forecast';
 import { CurrentData } from '../../components/Today';
 
 interface useVisualCrossingOptions {
-  key?: string
-  lat: string | number
-  lon: string | number
-  lang: LanguageCode
-  unit?: string
+  key?: string;
+  lat: string | number;
+  lon: string | number;
+  lang: LanguageCode;
+  unit?: string;
 }
 
 interface VisualCrossingDays {
-  datetimeEpoch: number
-  tempmax: number
-  tempmin: number
-  temp: number
-  humidity: number
-  windspeed: number
-  description: string
-  icon: WeatherCode
+  datetimeEpoch: number;
+  tempmax: number;
+  tempmin: number;
+  temp: number;
+  humidity: number;
+  windspeed: number;
+  description: string;
+  icon: WeatherCode;
 }
 
 interface VisualCrossingCurrent {
-  datetimeEpoch: number
-  temp: number
-  humidity: number
-  windspeed: number
-  icon: WeatherCode
+  datetimeEpoch: number;
+  temp: number;
+  humidity: number;
+  windspeed: number;
+  icon: WeatherCode;
 }
 
 interface VisualCrossingResponse {
-  queryCost: number
-  latitude: number
-  longitude: number
-  resolvedAddress: string
-  address: string
-  timezone: string
-  tzoffset: number
-  days: VisualCrossingDays[]
-  currentConditions: VisualCrossingCurrent
+  queryCost: number;
+  latitude: number;
+  longitude: number;
+  resolvedAddress: string;
+  address: string;
+  timezone: string;
+  tzoffset: number;
+  days: VisualCrossingDays[];
+  currentConditions: VisualCrossingCurrent;
 }
 
-dayjs.extend(utc)
-dayjs.extend(timezone)
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 export const formatDate = (dte: number, lang: LanguageCode, tz: string) => {
   if (lang && lang !== 'en') {
@@ -58,14 +58,19 @@ export const formatDate = (dte: number, lang: LanguageCode, tz: string) => {
   }
   if (dte && dayjs(dte).isValid()) {
     let date = dayjs.unix(dte);
-    //without the timezone shift, the output time may be at the whim of the local JavaScript engine timezone 
+    // without the timezone shift, the output time may be at the whim of the local JavaScript engine timezone
     if (tz) date = date.tz(tz);
     return date.format('ddd D MMMM');
   }
   return '';
 };
 
-export const mapCurrent = (day: VisualCrossingDays, current: VisualCrossingCurrent, lang: LanguageCode, tz: string): CurrentData => {
+export const mapCurrent = (
+  day: VisualCrossingDays,
+  current: VisualCrossingCurrent,
+  lang: LanguageCode,
+  tz: string,
+): CurrentData => {
   return {
     date: formatDate(day.datetimeEpoch, lang, tz),
     description: day ? day.description : '',
@@ -80,7 +85,11 @@ export const mapCurrent = (day: VisualCrossingDays, current: VisualCrossingCurre
   };
 };
 
-export const mapForecast = (days: VisualCrossingDays[], lang: LanguageCode, tz: string): ForecastData[] => {
+export const mapForecast = (
+  days: VisualCrossingDays[],
+  lang: LanguageCode,
+  tz: string,
+): ForecastData[] => {
   const mappedForecast = [];
 
   for (let i = 0; i < 5; i += 1) {
@@ -99,21 +108,24 @@ export const mapForecast = (days: VisualCrossingDays[], lang: LanguageCode, tz: 
   return mappedForecast;
 };
 
-export const mapData = (weatherData: VisualCrossingResponse, lang: LanguageCode): WeatherData => {
+export const mapData = (
+  weatherData: VisualCrossingResponse,
+  lang: LanguageCode,
+): WeatherData => {
   if (weatherData) {
     const tz = weatherData.timezone;
-    const days = weatherData.days;
+    const { days } = weatherData;
     const current = weatherData.currentConditions;
-    const today = days && days[0]; //assuming forecast response
+    const today = days && days[0]; // assuming forecast response
 
     const mapped: WeatherData = {
       current: mapCurrent(today, current, lang, tz),
-      forecast: mapForecast(days, lang, tz)
-    }
+      forecast: mapForecast(days, lang, tz),
+    };
 
     return mapped;
   }
-  throw new Error("No weather data supplied");
+  throw new Error('No weather data supplied');
 };
 
 const initialState = {
@@ -126,32 +138,29 @@ const useVisualCrossing = (options: useVisualCrossingOptions) => {
   const { data, errorMessage } = state;
   const [isLoading, setIsLoading] = useState(false);
   const { unit, lang, key, lon, lat } = options;
-  //end point supports addresses too but stay with lat,lon
+  // end point supports addresses too but stay with lat,lon
   const endpoint = `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${lat},${lon}`;
   const params = {
-    key: key,
+    key,
     lang,
-    unitGroup: unit, //metric, us
-    iconSet: "icons2", //use updated icons
-    include: "days,current", //reduce response data to data we need
-    elements: "datetimeEpoch,tempmax,tempmin,temp,humidity,windspeed,icon,description", //reduce response data size to data we need
+    unitGroup: unit, // metric, us
+    iconSet: 'icons2', // use updated icons
+    include: 'days,current', // reduce response data to data we need
+    elements:
+      'datetimeEpoch,tempmax,tempmin,temp,humidity,windspeed,icon,description', // reduce response data size to data we need
   };
 
   const fetchData = async () => {
     setIsLoading(true);
     try {
       const weatherResponse = await axios.get(endpoint, { params });
-      const payload = mapData(
-        weatherResponse.data,
-        lang,
-      );
+      const payload = mapData(weatherResponse.data, lang);
 
       dispatch({
         type: SUCCESS,
         payload,
       });
     } catch (error: unknown) {
-
       let message: string;
 
       if (error instanceof Error) {

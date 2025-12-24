@@ -1,13 +1,16 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import ReactWeather, {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   useVisualCrossing,
   useOpenWeather,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   useWeatherBit,
-  useOpenMeteo
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  useOpenMeteo,
 } from '.';
 
-const App = () => {
+function App() {
   //   const { data, isLoading, errorMessage } = useOpenMeteo({
   //   // key: 'YOUR-API-KEY',
   //   // prefix: 'YOUR-CUSTOMER-PREFIX',
@@ -50,7 +53,7 @@ const App = () => {
       showForecast
     />
   );
-};
+}
 
 const container = document.getElementById('app');
 const root = createRoot(container!);
