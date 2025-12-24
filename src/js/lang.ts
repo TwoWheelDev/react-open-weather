@@ -41,7 +41,6 @@ export const langText = {
   nl_be: { wind: 'Windsnelheid', humidity: 'Luchtvochtigheid' },
   fi: { wind: 'Tuuli', humidity: 'Ilmankosteus' },
   ar: { wind: 'رياح', humidity: 'رطوبة' },
-
 };
 
 export type LanguageCode = keyof typeof langText;

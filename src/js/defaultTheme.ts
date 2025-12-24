@@ -1,4 +1,4 @@
-import { Theme } from '@emotion/react'
+import { Theme } from '@emotion/react';
 
 const defaultTheme: Theme = {
   fontFamily: 'Helvetica, sans-serif',
@@ -21,4 +21,4 @@ const defaultTheme: Theme = {
   containerDropShadow: '0px 3px 6px 0px rgba(50, 50, 50, 0.5)',
 };
 
-export default defaultTheme
+export default defaultTheme;
