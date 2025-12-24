@@ -5,21 +5,21 @@ import { UnitsLabels } from '../models/unitsLabels';
 import defaultTheme from '../defaultTheme';
 
 export interface ForecastData {
-  date: string
-  description: string
-  icon: string
-  temperature: { min: string, max: string },
-  wind: string,
-  humidity: number,
+  date: string;
+  description: string;
+  icon: string;
+  temperature: { min: string; max: string };
+  wind: string;
+  humidity: number;
 }
 
 export interface ForecastProps {
-  unitsLabels: UnitsLabels
-  forecast: Array<ForecastData>
-  theme: typeof defaultTheme
+  unitsLabels: UnitsLabels;
+  forecast: Array<ForecastData>;
+  theme: typeof defaultTheme;
 }
 
-const Forecast: React.FC<ForecastProps> = ({ unitsLabels, forecast, theme }) => {
+function Forecast({ unitsLabels, forecast, theme }: ForecastProps) {
   return (
     <StyledDaysPanel className="rw-forecast-days-panel" theme={theme}>
       {forecast.map((day, i) => {
@@ -46,6 +46,6 @@ const Forecast: React.FC<ForecastProps> = ({ unitsLabels, forecast, theme }) => 
       })}
     </StyledDaysPanel>
   );
-};
+}
 
 export default Forecast;

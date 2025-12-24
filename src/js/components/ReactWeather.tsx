@@ -8,22 +8,22 @@ import { UnitsLabels } from '../models/unitsLabels';
 import { LanguageCode } from '../lang';
 
 export interface WeatherData {
-  forecast: Array<ForecastData>
-  current: CurrentData
+  forecast: Array<ForecastData>;
+  current: CurrentData;
 }
 
 export interface ReactWeatherProps {
-  unitsLabels?: UnitsLabels
-  showForecast?: boolean
-  lang?: LanguageCode
-  data: WeatherData|null
-  locationLabel?: string
-  isLoading?: boolean
-  errorMessage: string|null
-  theme?: typeof defaultTheme
+  unitsLabels?: UnitsLabels;
+  showForecast?: boolean;
+  lang?: LanguageCode;
+  data: WeatherData | null;
+  locationLabel?: string;
+  isLoading?: boolean;
+  errorMessage: string | null;
+  theme?: typeof defaultTheme;
 }
 
-const ReactWeather: React.FC<ReactWeatherProps> = ({
+function ReactWeather({
   unitsLabels = { temperature: 'C', windSpeed: 'Km/h' },
   showForecast = true,
   lang = 'en',
@@ -32,7 +32,7 @@ const ReactWeather: React.FC<ReactWeatherProps> = ({
   isLoading = false,
   errorMessage = null,
   theme = defaultTheme,
-}) => {
+}: ReactWeatherProps) {
   if (data) {
     const { forecast, current } = data;
     if (isLoading) {
@@ -73,6 +73,6 @@ const ReactWeather: React.FC<ReactWeatherProps> = ({
     );
   }
   return null;
-};
+}
 
 export default ReactWeather;

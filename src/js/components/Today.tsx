@@ -6,22 +6,26 @@ import { UnitsLabels } from '../models/unitsLabels';
 import { LanguageCode } from '../lang';
 
 export interface CurrentData {
-  date: string|number
-  description: string
-  icon: string
-  temperature: { current: string|number, min: string|number|undefined, max: string|number|undefined }
-  wind: string|number
-  humidity: string|number
+  date: string | number;
+  description: string;
+  icon: string;
+  temperature: {
+    current: string | number;
+    min: string | number | undefined;
+    max: string | number | undefined;
+  };
+  wind: string | number;
+  humidity: string | number;
 }
 
 export interface TodayProps {
-  current: CurrentData
-  unitsLabels: UnitsLabels
-  lang: LanguageCode
-  theme?: typeof defaultTheme
+  current: CurrentData;
+  unitsLabels: UnitsLabels;
+  lang: LanguageCode;
+  theme?: typeof defaultTheme;
 }
 
-const Today: React.FC<TodayProps> = ({ current, unitsLabels, lang, theme }) => {
+function Today({ current, unitsLabels, lang, theme }: TodayProps) {
   const labels = getLabelsByLanguage(lang);
   const hasRange =
     current.temperature.min !== undefined &&
@@ -51,6 +55,6 @@ const Today: React.FC<TodayProps> = ({ current, unitsLabels, lang, theme }) => {
       </div>
     </StyledtodayPanel>
   );
-};
+}
 
 export default Today;

@@ -2,18 +2,24 @@ import React from 'react';
 import styled from '@emotion/styled';
 
 export interface WeatherIconProps {
-  path: string
-  title: string
-  viewBox?: string,
-  color?: string,
-  size?: number,
+  path: string;
+  title: string;
+  viewBox?: string;
+  color?: string;
+  size?: number;
 }
 
 const StyledSVG = styled.svg`
   fill: ${({ color }) => color};
 `;
 
-const WeatherIcon: React.FC<WeatherIconProps> = ({ title, path, size = 40, viewBox = '0 -5 35 40', color = '#4BC4F7' }) => {
+function WeatherIcon({
+  title,
+  path,
+  size = 40,
+  viewBox = '0 -5 35 40',
+  color = '#4BC4F7',
+}: WeatherIconProps) {
   return (
     <StyledSVG
       color={color}
@@ -27,6 +33,6 @@ const WeatherIcon: React.FC<WeatherIconProps> = ({ title, path, size = 40, viewB
       <path d={path} />
     </StyledSVG>
   );
-};
+}
 
 export default WeatherIcon;

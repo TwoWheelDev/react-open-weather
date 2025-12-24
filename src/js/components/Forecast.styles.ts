@@ -1,8 +1,8 @@
 import styled from '@emotion/styled';
-import { Theme } from '@emotion/react'
+import { Theme } from '@emotion/react';
 
 interface StyledDaysPanelProps {
-  theme: Theme
+  theme: Theme;
 }
 
 export const StyledDaysPanel = styled.div<StyledDaysPanelProps>`

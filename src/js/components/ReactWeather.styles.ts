@@ -1,9 +1,9 @@
 import styled from '@emotion/styled';
-import { Theme } from '@emotion/react'
+import { Theme } from '@emotion/react';
 
 interface StyledContainerProps {
-  showForecast?: boolean
-  theme: Theme
+  showForecast?: boolean;
+  theme: Theme;
 }
 
 export const StyledContainer = styled.div<StyledContainerProps>`
