@@ -1,7 +1,29 @@
 module.exports = {
-  parser: 'babel-eslint',
-  extends: ['airbnb', 'prettier', 'prettier/react'],
-  plugins: ['prettier'],
+  parser: '@typescript-eslint/parser',
+  parserOptions: {
+    ecmaVersion: 2020,
+    sourceType: 'module',
+    ecmaFeatures: {
+      jsx: true,
+    },
+  },
+  extends: [
+    'airbnb',
+    'prettier',
+    'eslint:recommended',
+    'plugin:react/recommended',
+    'plugin:@typescript-eslint/recommended',
+    'plugin:prettier/recommended',
+  ],
+  plugins: ['@typescript-eslint', 'react', 'prettier'],
+  settings: {
+    react: {
+      version: 'detect',
+    },
+    'import/resolver': {
+      typescript: {}, // This tells eslint-plugin-import to use tsconfig paths & extensions
+    },
+  },
   env: {
     browser: true,
     jest: true,
@@ -55,5 +77,16 @@ module.exports = {
 
     'react/forbid-prop-types': 'off',
     'react/jsx-filename-extension': 'off',
+    'import/extensions': [
+      'error',
+      'ignorePackages',
+      {
+        ts: 'never',
+        tsx: 'never',
+        js: 'never',
+        jsx: 'never',
+      },
+    ],
+    'react/require-default-props': 'off',
   },
 };

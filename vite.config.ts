@@ -9,7 +9,5 @@ export default defineConfig({
       '@': path.resolve(__dirname, 'src/js'),
     },
   },
-  server: {
-    port: 5000,
-  },
+  server: { port: 5000 }, // default publicDir = 'public'
 });
