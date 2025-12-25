@@ -1,4 +1,6 @@
-export const apiForecastResponse = {
+import { WeatherBitForecast } from "../../../src/js/providers/weatherbit/useWeatherBit";
+
+export const apiForecastResponse: WeatherBitForecast = {
   data: [
     {
       rh: 95,

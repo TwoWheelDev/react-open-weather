@@ -1,4 +1,7 @@
-export const apiForecastResponse = [
+import { ForecastData } from "../../../src/js/components/Forecast";
+import { OpenWeatherDaily } from "../../../src/js/providers/openweather/useOpenWeather";
+
+export const apiForecastResponse: OpenWeatherDaily[] = [
   {
     dt: 1606474800,
     sunrise: 1606459100,
@@ -201,7 +204,7 @@ export const apiForecastResponse = [
   },
 ];
 
-export const mappedForecast = [
+export const mappedForecast: ForecastData[] = [
   {
     date: 'Fri 27 November',
     description: 'clear sky',

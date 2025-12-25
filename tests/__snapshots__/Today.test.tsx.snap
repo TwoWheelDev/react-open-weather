@@ -1,0 +1,54 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Forecast > should render the Forecast component 1`] = `
+<div>
+  <div
+    class="rw-today css-w3t7ie"
+  >
+    <div
+      class="rw-today-date"
+    >
+      Fri 27 November
+    </div>
+    <div
+      class="rw-today-hr"
+    />
+    <div
+      class="rw-today-current"
+    >
+      -2
+       
+      F
+    </div>
+    <div
+      class="rw-today-desc"
+    >
+      clear sky
+    </div>
+    <div
+      class="rw-today-hr"
+    />
+    <div
+      class="rw-today-info"
+    >
+      <div>
+        Wind
+        : 
+        <b>
+          2
+        </b>
+         
+        km/h
+      </div>
+      <div>
+        Humidity
+        : 
+        <b>
+          90
+        </b>
+         %
+      </div>
+    </div>
+  </div>
+</div>
+`;

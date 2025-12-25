@@ -11,9 +11,10 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "rootDir": "src/js",
+    "rootDir": ".",
     "outDir": "lib",
-    "noEmit": false
+    "noEmit": false,
+    "types": ["vite/client", "jest"]
   },
-  "include": ["src"]
+  "include": ["src/js", "tests"]
 }

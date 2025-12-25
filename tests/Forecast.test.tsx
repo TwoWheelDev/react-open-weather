@@ -1,8 +1,9 @@
 import React from 'react';
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { checkSnapshot } from './test-utils';
+import { render } from '@testing-library/react';
 import Forecast from '../src/js/components/Forecast';
 import { mappedForecast } from './fixtures/openweather/forecast';
+import defaultTheme from '../src/js/defaultTheme';
 
 describe('Forecast', () => {
   test('should render the Forecast component', () => {
@@ -10,8 +11,15 @@ describe('Forecast', () => {
       temperature: 'F',
       windSpeed: 'km/h',
     };
-    checkSnapshot(
-      <Forecast unitsLabels={labels} forecast={mappedForecast} theme={{}} />,
+
+    const { container } = render(
+      <Forecast
+        unitsLabels={labels}
+        forecast={mappedForecast}
+        theme={defaultTheme}
+      />,
     );
+
+    expect(container).toMatchSnapshot();
   });
 });

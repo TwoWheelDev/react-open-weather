@@ -1,42 +1,53 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import MockAdapter from 'axios-mock-adapter';
-import { renderHook } from '@testing-library/react-hooks';
+import { act, renderHook, waitFor } from '@testing-library/react';
 import axios from 'axios';
-import useOpenWeather, {
+import useVisualCrossing, {
   formatDate,
   mapCurrent,
   mapForecast,
   mapData,
-  fetchReducer,
-} from '../src/js/providers/openweather/useOpenWeather';
-import {
-  mappedCurrent,
-  apiCurrentResponse,
-} from './fixtures/openweather/current';
+} from '../src/js/providers/visualcrossing/useVisualCrossing';
+import { mappedCurrent } from './fixtures/visualcrossing/current';
 import {
   mappedForecast,
   apiForecastResponse,
-} from './fixtures/openweather/forecast';
-import { getIcon } from '../src/js/providers/openweather/iconsMap';
+} from './fixtures/visualcrossing/forecast';
+import { getIcon } from '../src/js/providers/visualcrossing/iconsMap';
 import svgIcons from '../src/js/svgIcons';
 
 describe('Testing data mapping', () => {
   test('should return formatted date', () => {
-    expect(formatDate('1573516800')).toEqual('Tue 12 November');
+    expect(formatDate(1573516800, 'en', 'Europe/Berlin')).toEqual(
+      'Tue 12 November',
+    ); // depends on timezone of Javascript runtime. time epoch is relative to UTC
   });
+
   test('return empty string if input date is invalid', () => {
-    expect(formatDate(null)).toEqual('');
+    expect(formatDate(null, 'en')).toEqual('');
   });
+
   test('should map today data', () => {
-    const mapped = mapCurrent(apiCurrentResponse);
+    const mapped = mapCurrent(
+      apiForecastResponse.days[0],
+      apiForecastResponse.currentConditions,
+      'en',
+      apiForecastResponse.timezone,
+    );
     expect(mapped).toEqual(mappedCurrent);
   });
+
   test('should map forecast data', () => {
-    const mapped = mapForecast(apiForecastResponse);
+    const mapped = mapForecast(
+      apiForecastResponse.days,
+      'en',
+      apiForecastResponse.timezone,
+    );
     expect(mapped).toEqual(mappedForecast);
   });
+
   test('should map combined current and forecast data', () => {
-    const mapped = mapData(apiForecastResponse, apiCurrentResponse, 'en');
+    const mapped = mapData(apiForecastResponse, 'en');
     const expected = {
       current: mappedCurrent,
       forecast: mappedForecast,
@@ -45,20 +56,16 @@ describe('Testing data mapping', () => {
   });
 });
 
-describe('Test useOpenWeather hook', () => {
+describe('Test useVisualCrossing hook', () => {
   test('gets and map the data', async () => {
     const mock = new MockAdapter(axios);
     mock.onGet().reply(() => {
-      const response = {
-        current: apiCurrentResponse,
-        daily: apiForecastResponse,
-      };
+      const response = apiForecastResponse;
       return [200, response];
     });
-    const { result, waitForNextUpdate } = renderHook(() =>
-      useOpenWeather({
-        apikey: 'dummy key',
-        type: 'geo',
+    const { result } = renderHook(() =>
+      useVisualCrossing({
+        key: '1PYNQ6AWUDJE9AFERDCHJHSXK',
         lat: '48.137154',
         lon: '11.576124',
         lang: 'en',
@@ -66,8 +73,13 @@ describe('Test useOpenWeather hook', () => {
       }),
     );
 
-    result.current.fetchData();
-    await waitForNextUpdate();
+    act(() => {
+      result.current.fetchData();
+    });
+
+    await waitFor(() => {
+      expect(result.current.isLoading).toBe(false);
+    });
 
     const expected = {
       current: mappedCurrent,
@@ -82,10 +94,23 @@ describe('Test useOpenWeather hook', () => {
   test('return error when http request fails', async () => {
     const mock = new MockAdapter(axios);
     mock.onGet().reply(500);
-    const { result, waitForNextUpdate } = renderHook(() => useOpenWeather({}));
+    const { result } = renderHook(() =>
+      useVisualCrossing({
+        key: '1PYNQ6AWUDJE9AFERDCHJHSXK',
+        lat: '48.137154',
+        lon: '11.576124',
+        lang: 'en',
+        unit: 'metric',
+      }),
+    );
 
-    result.current.fetchData();
-    await waitForNextUpdate();
+    act(() => {
+      result.current.fetchData();
+    });
+
+    await waitFor(() => {
+      expect(result.current.isLoading).toBe(false);
+    });
 
     expect(result.current.data).toEqual(null);
     expect(result.current.isLoading).toBeFalsy();
@@ -93,18 +118,11 @@ describe('Test useOpenWeather hook', () => {
       'Request failed with status code 500',
     );
   });
-  test('reducer return default state', () => {
-    const initialState = { data: 'initial' };
-    const newState = fetchReducer(initialState, {
-      type: 'non existent action',
-    });
-    expect(newState).toEqual(initialState);
-  });
 });
 
 describe('Test Icons Map', () => {
   test('should return the correct icon', () => {
-    const icon = getIcon('04d');
+    const icon = getIcon('cloudy');
     expect(icon).toEqual(svgIcons.cloudy);
   });
   test('should return default icon when icon is not found', () => {

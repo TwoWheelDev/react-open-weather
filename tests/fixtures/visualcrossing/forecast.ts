@@ -1,4 +1,7 @@
-export const apiForecastResponse = {
+import { ForecastData } from "../../../src/js/components/Forecast";
+import { VisualCrossingResponse } from "../../../src/js/providers/visualcrossing/useVisualCrossing";
+
+export const apiForecastResponse: VisualCrossingResponse = {
   queryCost: 1,
   latitude: 48.137154,
   longitude: 11.576124,
@@ -167,7 +170,7 @@ export const apiForecastResponse = {
   },
 };
 
-export const mappedForecast = [
+export const mappedForecast: ForecastData[] = [
   {
     date: 'Wed 23 March',
     description: 'Clear conditions throughout the day.',
