@@ -1,8 +1,9 @@
 {
   "name": "@twowheeldevuk/react-open-weather",
-  "version": "2.0.1",
+  "version": "2.0.0",
   "description": "React Weather component",
   "main": "lib/index.js",
+  "module": "lib/index.js",
   "types": "lib/index.d.ts",
   "files": [
     "lib"
@@ -11,14 +12,14 @@
     "node": ">=20"
   },
   "peerDependencies": {
-    "react": ">=18.0.0"
+    "react": ">=18.0.0",
+    "react-dom": "^19.2.3"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
     "axios": "^1.6.0",
-    "dayjs": "^1.9.6",
-    "react-dom": "^19.2.3"
+    "dayjs": "^1.9.6"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.9.1",
