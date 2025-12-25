@@ -16,7 +16,7 @@ interface useWeatherBitOptions {
   unit?: string;
 }
 
-interface WeatherBitCurrent {
+export interface WeatherBitCurrentData {
   rh: number;
   city_name: string;
   wind_spd: number;
@@ -25,7 +25,11 @@ interface WeatherBitCurrent {
   temp: number;
 }
 
-interface WeatherBitForecast {
+export interface WeatherBitCurrent {
+  data: WeatherBitCurrentData[];
+}
+
+export interface WeatherBitForecastData {
   rh: number;
   wind_spd: number;
   weather: { icon: string; code: WeatherCode; description: string };
@@ -34,12 +38,22 @@ interface WeatherBitForecast {
   min_temp: number;
 }
 
+export interface WeatherBitForecast {
+  city_name: string;
+  country_code: string;
+  data: WeatherBitForecastData[];
+  lat: number;
+  lon: number;
+  state_code: string;
+  timezone: string;
+}
+
 const initialState = {
   data: null,
   errorMessage: null,
 };
 
-export const formatDate = (dte: string, lang: LanguageCode) => {
+export const formatDate = (dte: string | null, lang: LanguageCode) => {
   if (lang && lang !== 'en') {
     dayjs.locale(lang.replace('_', '-'));
   }
@@ -50,8 +64,8 @@ export const formatDate = (dte: string, lang: LanguageCode) => {
 };
 
 export const mapCurrent = (
-  day: WeatherBitForecast,
-  current: WeatherBitCurrent,
+  day: WeatherBitForecastData,
+  current: WeatherBitCurrentData,
   lang: LanguageCode,
 ): CurrentData => {
   return {
@@ -69,7 +83,7 @@ export const mapCurrent = (
 };
 
 export const mapForecast = (
-  forecast: WeatherBitForecast[],
+  forecast: WeatherBitForecastData[],
   lang: LanguageCode,
 ): ForecastData[] => {
   const mappedForecast = [];
@@ -90,8 +104,8 @@ export const mapForecast = (
 };
 
 export const mapData = (
-  daysData: WeatherBitForecast[],
-  current: WeatherBitCurrent,
+  daysData: WeatherBitForecastData[],
+  current: WeatherBitCurrentData,
   lang: LanguageCode,
 ): WeatherData => {
   if (daysData && current) {

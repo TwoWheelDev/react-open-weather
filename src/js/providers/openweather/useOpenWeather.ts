@@ -16,7 +16,7 @@ interface useOpenWeatherOptions {
   unit?: string;
 }
 
-interface OpenWeatherDaily {
+export interface OpenWeatherDaily {
   dt: number;
   sunrise: number;
   sunset: number;
@@ -38,11 +38,13 @@ interface OpenWeatherDaily {
     { id: number; main: string; description: string; icon: WeatherCode },
   ];
   clouds: number;
+  snow?: number;
+  rain?: number;
   pop: number;
   uvi: number;
 }
 
-interface OpenWeatherCurrent {
+export interface OpenWeatherCurrent {
   dt: number;
   sunrise: number;
   sunset: number;
@@ -61,14 +63,25 @@ interface OpenWeatherCurrent {
   visibility: number;
 }
 
-export const formatDate = (dte: number, lang: LanguageCode) => {
-  if (lang && lang !== 'en') {
+export const formatDate = (
+  dte: number | null | undefined,
+  lang: LanguageCode,
+  tz?: string,
+): string => {
+  if (!dte) return '';
+
+  if (lang !== 'en') {
     dayjs.locale(lang.replace('_', '-'));
   }
-  if (dte && dayjs(dte).isValid()) {
-    return dayjs.unix(dte).format('ddd D MMMM');
+
+  let date = dayjs.unix(dte);
+  if (!date.isValid()) return '';
+
+  if (tz) {
+    date = date.tz(tz);
   }
-  return '';
+
+  return date.format('ddd D MMMM');
 };
 
 export const mapCurrent = (

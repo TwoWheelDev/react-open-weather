@@ -37,7 +37,7 @@ interface VisualCrossingCurrent {
   icon: WeatherCode;
 }
 
-interface VisualCrossingResponse {
+export interface VisualCrossingResponse {
   queryCost: number;
   latitude: number;
   longitude: number;
@@ -52,17 +52,25 @@ interface VisualCrossingResponse {
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
-export const formatDate = (dte: number, lang: LanguageCode, tz: string) => {
-  if (lang && lang !== 'en') {
+export const formatDate = (
+  dte: number | null | undefined,
+  lang: LanguageCode,
+  tz?: string,
+): string => {
+  if (!dte) return '';
+
+  if (lang !== 'en') {
     dayjs.locale(lang.replace('_', '-'));
   }
-  if (dte && dayjs(dte).isValid()) {
-    let date = dayjs.unix(dte);
-    // without the timezone shift, the output time may be at the whim of the local JavaScript engine timezone
-    if (tz) date = date.tz(tz);
-    return date.format('ddd D MMMM');
+
+  let date = dayjs.unix(dte);
+  if (!date.isValid()) return '';
+
+  if (tz) {
+    date = date.tz(tz);
   }
-  return '';
+
+  return date.format('ddd D MMMM');
 };
 
 export const mapCurrent = (

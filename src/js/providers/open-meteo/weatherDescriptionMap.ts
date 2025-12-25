@@ -36,16 +36,16 @@ const weatherCodeMap = {
 
 export type WeatherCode = keyof typeof weatherCodeMap;
 
-export const getWeatherDescription = (code: WeatherCode) => {
-  if (weatherCodeMap[code]) {
-    return weatherCodeMap[code].desc;
+export const getWeatherDescription = (code: number | WeatherCode) => {
+  if (code in weatherCodeMap) {
+    return weatherCodeMap[code as WeatherCode].desc;
   }
   return '';
 };
 
-export const getIcon = (code: WeatherCode) => {
-  if (weatherCodeMap[code]) {
-    return weatherCodeMap[code].icon;
+export const getIcon = (code: number | WeatherCode) => {
+  if (code in weatherCodeMap) {
+    return weatherCodeMap[code as WeatherCode].icon;
   }
   return svgIcons.sunny;
 };

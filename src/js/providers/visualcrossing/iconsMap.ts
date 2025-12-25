@@ -22,9 +22,9 @@ const iconsMap = {
 
 export type WeatherCode = keyof typeof iconsMap;
 
-export const getIcon = (name: WeatherCode) => {
-  if (iconsMap[name]) {
-    return iconsMap[name];
+export const getIcon = (name: string | WeatherCode) => {
+  if (name in iconsMap) {
+    return iconsMap[name as WeatherCode];
   }
   return svgIcons.sunny;
 };

@@ -41,7 +41,7 @@ interface OpenMeteoParams {
   apikey?: string;
 }
 
-interface OpenMeteoDaily {
+export interface OpenMeteoDaily {
   time: Array<number>;
   temperature_2m_min: Array<number>;
   temperature_2m_max: Array<number>;
@@ -50,7 +50,7 @@ interface OpenMeteoDaily {
   weather_code: Array<WeatherCode>;
 }
 
-interface OpenMeteoCurrent {
+export interface OpenMeteoCurrent {
   time: number;
   interval: number;
   temperature_2m: number;
@@ -59,7 +59,7 @@ interface OpenMeteoCurrent {
   weather_code: WeatherCode;
 }
 
-interface OpenMeteoResponse {
+export interface OpenMeteoResponse {
   latitude: number;
   longitude: number;
   generationtime_ms: number;
@@ -78,17 +78,25 @@ const initialState = {
   errorMessage: null,
 };
 
-export const formatDate = (dte: number, lang: LanguageCode, tz?: string) => {
-  if (lang && lang !== 'en') {
+export const formatDate = (
+  dte: number | null | undefined,
+  lang: LanguageCode,
+  tz?: string,
+): string => {
+  if (!dte) return '';
+
+  if (lang !== 'en') {
     dayjs.locale(lang.replace('_', '-'));
   }
-  if (dte && dayjs(dte).isValid()) {
-    let date = dayjs.unix(dte);
-    // without the timezone shift, the output time may be at the whim of the local JavaScript engine timezone
-    if (tz) date = date.tz(tz);
-    return date.format('ddd D MMMM');
+
+  let date = dayjs.unix(dte);
+  if (!date.isValid()) return '';
+
+  if (tz) {
+    date = date.tz(tz);
   }
-  return '';
+
+  return date.format('ddd D MMMM');
 };
 
 export const mapCurrent = (
