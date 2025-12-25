@@ -11,7 +11,7 @@ import ReactWeather, {
 } from '.';
 
 function App() {
-  //   const { data, isLoading, errorMessage } = useOpenMeteo({
+  // const { data, isLoading, errorMessage } = useOpenMeteo({
   //   // key: 'YOUR-API-KEY',
   //   // prefix: 'YOUR-CUSTOMER-PREFIX',
   //   lat: '52.583698',
