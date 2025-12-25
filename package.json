@@ -1,6 +1,5 @@
 {
   "name": "@twowheeldevuk/react-open-weather",
-  "bin": {},
   "version": "2.0.1",
   "description": "React Weather component",
   "main": "lib/index.js",
@@ -49,7 +48,7 @@
   "scripts": {
     "build": "tsc",
     "dev": "vite",
-    "lint": "./node_modules/.bin/eslint ./src/js --ext .ts,.tsx,.js,.jsx",
+    "lint": "eslint ./src/js --ext .ts,.tsx,.js,.jsx",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
@@ -57,10 +56,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/farahat80/react-open-weather.git"
+    "url": "git+https://github.com/TwoWheelDev/react-open-weather.git"
   },
   "bugs": {
-    "url": "https://github.com/farahat80/react-open-weather/issues"
+    "url": "https://github.com/TwoWheelDev/react-open-weather/issues"
   },
   "keywords": [
     "react",
@@ -71,6 +70,6 @@
     "weather",
     "openweathermap"
   ],
-  "author": "Ahmed Farahat <farahat80@gmail.com>",
+  "author": "Daniel Lintott <git@dlintott.dev>",
   "license": "MIT"
 }
