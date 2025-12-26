@@ -25,7 +25,7 @@ export interface ReactWeatherProps {
 
 function ReactWeather({
   unitsLabels = { temperature: 'C', windSpeed: 'Km/h' },
-  showForecast = true,
+  showForecast,
   lang = 'en',
   data = null,
   locationLabel = '',
@@ -42,7 +42,11 @@ function ReactWeather({
       return <div>{errorMessage}</div>;
     }
     return (
-      <StyledContainer className="rw-container" theme={theme}>
+      <StyledContainer
+        className="rw-container"
+        showForecast={showForecast}
+        theme={theme}
+      >
         <div className="rw-container-main">
           <div className="rw-container-left">
             <h2 className="rw-container-header">{locationLabel}</h2>
