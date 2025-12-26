@@ -1,6 +1,6 @@
 {
   "name": "@twowheeldevuk/react-open-weather",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "React Weather component",
   "main": "lib/index.js",
   "module": "lib/index.js",
