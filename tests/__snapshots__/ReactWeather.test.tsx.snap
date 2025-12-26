@@ -5,7 +5,7 @@ exports[`ReactWeather > should render null when no data is provided 1`] = `<div 
 exports[`ReactWeather > should render the ReactWeather component 1`] = `
 <div>
   <div
-    class="rw-container css-1gool89"
+    class="rw-container css-18c0tq9"
   >
     <div
       class="rw-container-main"
